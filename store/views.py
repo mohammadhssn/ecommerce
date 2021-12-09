@@ -3,18 +3,12 @@ from .models import Category, Product
 from django.views import View
 
 
-class AllProducts(View):
+class ProductsAll(View):
 
     def get(self, request):
-        products = Product.objects.all()
+        products = Product.products.all()
 
         return render(request, 'store/home.html', {'products': products})
-
-
-def categories(request):
-    return {
-        'categories': Category.objects.all()
-    }
 
 
 class ProductDetail(View):
