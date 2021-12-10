@@ -1,17 +1,26 @@
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.http import HttpRequest
+from django.conf import settings
+
+from importlib import import_module
+from unittest import skip
 
 from store.views import ProductsAll
 from store.models import Category, Product
+
+
+@skip("demonstrating skipping")
+class TestSkip(TestCase):
+    def test_skip_exmaple(self):
+        pass
 
 
 class TestViewResponses(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.factory = RequestFactory()
         self.category = Category.objects.create(
             name='django',
             slug='django'
@@ -43,13 +52,17 @@ class TestViewResponses(TestCase):
 
     def test_homepage_html(self):
         request = HttpRequest()
+        engine = import_module(settings.SESSION_ENGINE)
+        request.session = engine.SessionStore()
         response = ProductsAll.get(self, request)
         html = response.content.decode('utf8')
         self.assertIn('<Title>\n    Bookstore\n</Title>', html.title())
         self.assertEqual(response.status_code, 200)
 
     def test_view_function(self):
-        request = self.factory.get('/item/django-beginners')
+        request = HttpRequest()
+        engine = import_module(settings.SESSION_ENGINE)
+        request.session = engine.SessionStore()
         response = ProductsAll.get(self, request)
         html = response.content.decode('utf8')
 
