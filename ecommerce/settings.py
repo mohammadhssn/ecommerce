@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import django.core.mail.backends.console
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-a4!xdk@^0d#oo)3_y-u%vzo&9+x)o1)o%e&%i$5+!_5=&^is@b'
@@ -20,6 +22,7 @@ INSTALLED_APPS = [
     # Local apps
     'store.apps.StoreConfig',
     'basket.apps.BasketConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -104,3 +107,11 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom User model
+AUTH_USER_MODEL = 'account.UserBase'
+LOGIN_REDIRECT_URL = '/account/dashboard'
+LOGIN_URL = '/account/login/'
+
+# Email setting
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
