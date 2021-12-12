@@ -1,15 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.contrib.auth import views as auth_view
 
-from .forms import RegistrationForm, UserLoginForm
+
+from .forms import RegistrationForm, UserLoginForm, UserEditForm
 from .models import UserBase
 from .token import account_activation_token
 
@@ -78,3 +79,29 @@ class AccountLogout(auth_view.LogoutView):
 class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'account/dashboard.html')
+
+
+class EditProfile(LoginRequiredMixin, View):
+    form_class = UserEditForm
+    template_name = 'account/edit_detail.html'
+
+    def get(self, request):
+        user_form = self.form_class(instance=request.user)
+        return render(request, self.template_name, {'user_form': user_form})
+
+    def post(self, request):
+        user_form = self.form_class(data=request.POST, instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('account:dashboard')
+        return render(request, self.template_name, {'user_form': self.form_class(instance=request.user)})
+
+
+class DeleteUser(LoginRequiredMixin, View):
+
+    def post(self, request):
+        user = get_object_or_404(UserBase, user_name=request.user)
+        user.is_active = False
+        user.save()
+        logout(request)
+        return redirect('account:delete_confirmation')
