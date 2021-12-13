@@ -8,9 +8,9 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.contrib.auth import views as auth_view
+from django.urls import reverse_lazy
 
-
-from .forms import RegistrationForm, UserLoginForm, UserEditForm
+from .forms import RegistrationForm, UserLoginForm, UserEditForm, PwdResetForm, PwdReseConfirmForm
 from .models import UserBase
 from .token import account_activation_token
 
@@ -105,3 +105,25 @@ class DeleteUser(LoginRequiredMixin, View):
         user.save()
         logout(request)
         return redirect('account:delete_confirmation')
+
+
+# Password Resset
+class UserPassReset(auth_view.PasswordResetView):
+    template_name = 'account/password_reset/password_reset_form.html'
+    success_url = reverse_lazy('account:password_reset_done')
+    email_template_name = 'account/password_reset/password_reset_email.html'
+    form_class = PwdResetForm
+
+
+class UserPassResetDone(auth_view.PasswordResetDoneView):
+    template_name = 'account/password_reset/reset_status.html'
+
+
+class UserPassResetConfirm(auth_view.PasswordResetConfirmView):
+    template_name = 'account/password_reset/password_reset_confirm.html'
+    success_url = reverse_lazy('account:password_reset_complete')
+    form_class = PwdReseConfirmForm
+
+
+class UserPassResetComplete(auth_view.PasswordResetCompleteView):
+    template_name = 'account/password_reset/reset_status.html'
