@@ -7,7 +7,7 @@ from store.models import Category, Product
 
 class TestBasketView(TestCase):
     def setUp(self):
-        get_user_model().objects.create_user(username='admin')
+        get_user_model().objects.create_user(email='admin@email.com', user_name='admin', password='pass123')
         Category.objects.create(name='django', slug='django')
         Product.objects.create(
             category_id=1,
@@ -69,7 +69,7 @@ class TestBasketView(TestCase):
             reverse('basket:basket_delete'), {"productid": 2, "action": "post"}, xhr=True
         )
 
-        self.assertEqual(response.json(), {'qty': 1, 'subtotal': '20.00'})
+        self.assertEqual(response.json(), {'qty': 1, 'subtotal': '31.50'})
 
     def test_basket_update(self):
         """Test updating items form the basket"""
@@ -78,4 +78,4 @@ class TestBasketView(TestCase):
             reverse('basket:basket_update'), {"productid": 2, "productqty": 1, "action": "post"}, xht=True
         )
 
-        self.assertEqual(response.json(), {'qty': 2, 'subtotal': '40.00'})
+        self.assertEqual(response.json(), {'qty': 2, 'subtotal': '51.50'})

@@ -13,6 +13,7 @@ from django.urls import reverse_lazy
 from .forms import RegistrationForm, UserLoginForm, UserEditForm, PwdResetForm, PwdReseConfirmForm
 from .models import UserBase
 from .token import account_activation_token
+from orders.views import UserOrders
 
 
 class AccountRegister(View):
@@ -78,7 +79,8 @@ class AccountLogout(auth_view.LogoutView):
 
 class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'account/dashboard.html')
+        orders = UserOrders.get(self, request)
+        return render(request, 'account/dashboard.html', {'orders': orders})
 
 
 class EditProfile(LoginRequiredMixin, View):

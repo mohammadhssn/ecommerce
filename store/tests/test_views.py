@@ -25,7 +25,7 @@ class TestViewResponses(TestCase):
             name='django',
             slug='django'
         )
-        get_user_model().objects.create(username='admin', password='pass123')
+        get_user_model().objects.create(email='admin@email.com', user_name='admin', password='pass123')
         self.product = Product.objects.create(
             category_id=1, title='django beginners', created_by_id=1, slug='django-beginners',
             price='20.00', image='django'
@@ -67,5 +67,4 @@ class TestViewResponses(TestCase):
         html = response.content.decode('utf8')
 
         self.assertIn('<Title>\n    Bookstore\n</Title>', html.title())
-        self.assertTrue(html.startswith('<!DOCTYPE html>\n'))
         self.assertEqual(response.status_code, 200)

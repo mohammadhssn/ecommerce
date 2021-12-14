@@ -8,7 +8,7 @@ SECRET_KEY = 'django-insecure-a4!xdk@^0d#oo)3_y-u%vzo&9+x)o1)o%e&%i$5+!_5=&^is@b
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1']
+ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig',
     'account.apps.AccountConfig',
     'payment.apps.PaymentConfig',
+    'orders.apps.OrdersConfig',
 ]
 
 MIDDLEWARE = [
@@ -116,3 +117,11 @@ LOGIN_URL = '/account/login/'
 
 # Email setting
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Stripe
+STRIPE_ENDPOINT_SECRET = 'whsec_QjdTlKeAZRJZCI2UJEzgoRoREZSzoAtU'
+PUBLISHABLE_KEY = 'pk_test_51K6LvrAditzYOocIsiB0wm5aky3z19XQRfqt4rwnivuZ65JzxiWadGoWGGgF9Bqem6nqXMtVuuPKlTMsgLgnW93M00x09R61en'
+SECRET_KEY = 'sk_test_51K6LvrAditzYOocI1eVdxbGnM8byAMYLW7Pm92I0zkYVKgNIZYx3Wn23OFx5dZf19lmbYV5hzZkQHqvuOlUFPQD500mukpiWGe'
+
+# basket session ID
+BASKET_SESSION_ID = 'basket'
