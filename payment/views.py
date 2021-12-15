@@ -4,11 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.csrf import csrf_exempt
 from django.http.response import HttpResponse
 from django.utils.decorators import method_decorator
+from django.conf import settings
 
 from basket.basket import Basket
 from orders.views import payment_confirmation
 import stripe
 import json
+import os
 
 
 class BasketView(LoginRequiredMixin, View):
@@ -18,14 +20,16 @@ class BasketView(LoginRequiredMixin, View):
         total = total.replace('.', '')
         total = int(total)
 
-        stripe.api_key = 'sk_test_51K6LvrAditzYOocI1eVdxbGnM8byAMYLW7Pm92I0zkYVKgNIZYx3Wn23OFx5dZf19lmbYV5hzZkQHqvuOlUFPQD500mukpiWGe'
+        stripe.api_key = settings.STRIPE_SECRET_KEY
         intent = stripe.PaymentIntent.create(
             amount=total,
             currency='gbp',
             metadata={'userid': request.user.id}
         )
 
-        return render(request, 'payment/home.html', {'client_secret': intent.client_secret})
+        return render(request, 'payment/payment_form.html', {'client_secret': intent.client_secret,
+                                                             'STRIPE_PUBLISHABLE_KEY': os.environ.get(
+                                                                 'STRIPE_PUBLISHABLE_KEY')})
 
 
 class StripeWebhook(View):

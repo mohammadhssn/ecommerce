@@ -18,7 +18,7 @@ from orders.views import UserOrders
 
 class AccountRegister(View):
     from_class = RegistrationForm
-    template_name = 'account/register.html'
+    template_name = 'account/registration/register.html'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -40,14 +40,14 @@ class AccountRegister(View):
             # Setup email
             current_site = get_current_site(request)
             subject = 'Activate your Account'
-            message = render_to_string('account/account_activation_email.html', {
+            message = render_to_string('account/registration/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject=subject, message=message)
-            return HttpResponse('registered successfully and activation sent')
+            return render(request, 'account/registration/register_email_confirm.html', {'form': form})
         return render(request, self.template_name, {'form': form})
 
 
@@ -65,7 +65,7 @@ class AccountActivate(View):
             login(request, user)
             return redirect('account:dashboard')
         else:
-            return render(request, 'account/activation_invalid.html')
+            return render(request, 'account/registration/activation_invalid.html')
 
 
 class AccountLogin(auth_view.LoginView):
@@ -80,12 +80,12 @@ class AccountLogout(auth_view.LogoutView):
 class Dashboard(LoginRequiredMixin, View):
     def get(self, request):
         orders = UserOrders.get(self, request)
-        return render(request, 'account/dashboard.html', {'orders': orders})
+        return render(request, 'account/dashboard/dashboard.html', {'orders': orders})
 
 
 class EditProfile(LoginRequiredMixin, View):
     form_class = UserEditForm
-    template_name = 'account/edit_detail.html'
+    template_name = 'account/dashboard/edit_detail.html'
 
     def get(self, request):
         user_form = self.form_class(instance=request.user)

@@ -1,7 +1,7 @@
 //'use strict';
 
 
-var stripe = Stripe('pk_test_51K6LvrAditzYOocIsiB0wm5aky3z19XQRfqt4rwnivuZ65JzxiWadGoWGGgF9Bqem6nqXMtVuuPKlTMsgLgnW93M00x09R61en');
+var stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
 
 var elem = document.getElementById('submit');
 clientsecret = elem.getAttribute('data-secret');
@@ -84,5 +84,5 @@ form.addEventListener('submit', function (ev) {
         error: function (xhr, errmsg, err) {
         },
     });
-    
+
 });
