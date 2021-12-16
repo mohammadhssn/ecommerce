@@ -3,7 +3,7 @@ from pathlib import Path
 
 import django.core.mail.backends.console
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = 'django-insecure-a4!xdk@^0d#oo)3_y-u%vzo&9+x)o1)o%e&%i$5+!_5=&^is@b'
 
@@ -26,6 +26,8 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'payment.apps.PaymentConfig',
     'orders.apps.OrdersConfig',
+    # Third-party apps
+    'mptt',
 ]
 
 MIDDLEWARE = [
