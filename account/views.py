@@ -6,12 +6,11 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse
 from django.contrib.auth import views as auth_view
 from django.urls import reverse_lazy
 
-from .forms import RegistrationForm, UserLoginForm, UserEditForm, PwdResetForm, PwdReseConfirmForm
-from .models import UserBase
+from .forms import RegistrationForm, UserLoginForm, UserEditForm, PwdResetForm, PwdReseConfirmForm, UserAddressForm
+from .models import Customer, Address
 from .token import account_activation_token
 from orders.views import UserOrders
 
@@ -56,7 +55,7 @@ class AccountActivate(View):
     def get(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
-            user = UserBase.objects.get(pk=uid)
+            user = Customer.objects.get(pk=uid)
         except():
             pass
         if user is not None and account_activation_token.check_token(user, token):
@@ -73,7 +72,7 @@ class AccountLogin(auth_view.LoginView):
     form_class = UserLoginForm
 
 
-class AccountLogout(auth_view.LogoutView):
+class AccountLogout(LoginRequiredMixin, auth_view.LogoutView):
     next_page = '/account/login/'
 
 
@@ -102,7 +101,7 @@ class EditProfile(LoginRequiredMixin, View):
 class DeleteUser(LoginRequiredMixin, View):
 
     def post(self, request):
-        user = get_object_or_404(UserBase, user_name=request.user)
+        user = get_object_or_404(Customer, name=request.user)
         user.is_active = False
         user.save()
         logout(request)
@@ -129,3 +128,65 @@ class UserPassResetConfirm(auth_view.PasswordResetConfirmView):
 
 class UserPassResetComplete(auth_view.PasswordResetCompleteView):
     template_name = 'account/password_reset/reset_status.html'
+
+
+# Addresses
+
+class ViewAddress(LoginRequiredMixin, View):
+
+    def get(self, request):
+        addresses = Address.objects.filter(customer=request.user)
+        return render(request, 'account/dashboard/addresses.html', {'addresses': addresses})
+
+
+class AddAddress(LoginRequiredMixin, View):
+    form_class = UserAddressForm
+    template_name = 'account/dashboard/edit_addresses.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {'form': self.form_class})
+
+    def post(self, request):
+        form = self.form_class(data=request.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.customer = request.user
+            form.save()
+            return redirect('account:addresses')
+        return render(request, self.template_name, {'form': form})
+
+
+class EditeAddress(LoginRequiredMixin, View):
+    template_name = 'account/dashboard/edit_addresses.html'
+    form_class = UserAddressForm
+
+    def setup(self, request, *args, **kwargs):
+        self.address = get_object_or_404(Address, pk=kwargs.get('id'), customer=request.user)
+        super().setup(request, *args, **kwargs)
+
+    def get(self, request, **kwargs):
+        form = self.form_class(instance=self.address)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, **kwargs):
+        form = self.form_class(data=request.POST, instance=self.address)
+        if form.is_valid():
+            form.save()
+            return redirect('account:addresses')
+        return render(request, self.template_name, {'form': form})
+
+
+class DeleteAddress(LoginRequiredMixin, View):
+
+    def get(self, request, id):
+        address = get_object_or_404(Address, pk=id, customer=request.user)
+        address.delete()
+        return redirect('account:addresses')
+
+
+class SetDefaultAddress(LoginRequiredMixin, View):
+
+    def get(self, request, id):
+        Address.objects.filter(customer=request.user, default=True).update(default=False)
+        Address.objects.filter(pk=id, customer=request.user).update(default=True)
+        return redirect('account:addresses')
