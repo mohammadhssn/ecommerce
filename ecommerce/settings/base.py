@@ -24,8 +24,8 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'basket.apps.BasketConfig',
     'account.apps.AccountConfig',
-    'payment.apps.PaymentConfig',
     'orders.apps.OrdersConfig',
+    'checkout.apps.CheckoutConfig',
     # Third-party apps
     'mptt',
 ]
@@ -120,13 +120,6 @@ LOGIN_URL = '/account/login/'
 
 # Email setting
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-# Stripe
-# STRIPE_ENDPOINT_SECRET = 'whsec_QjdTlKeAZRJZCI2UJEzgoRoREZSzoAtU'
-os.environ.setdefault('STRIPE_PUBLISHABLE_KEY',
-                      'pk_test_51K6LvrAditzYOocIsiB0wm5aky3z19XQRfqt4rwnivuZ65JzxiWadGoWGGgF9Bqem6nqXMtVuuPKlTMsgLgnW93M00x09R61en'
-                      )
-STRIPE_SECRET_KEY = 'sk_test_51K6LvrAditzYOocI1eVdxbGnM8byAMYLW7Pm92I0zkYVKgNIZYx3Wn23OFx5dZf19lmbYV5hzZkQHqvuOlUFPQD500mukpiWGe'
 
 # basket session ID
 BASKET_SESSION_ID = 'basket'

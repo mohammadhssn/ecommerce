@@ -1,11 +1,7 @@
 {% extends 'base.html' %}
-{% load static %}
-
-{% block title %}
-    Basket Summary
-{% endblock %}
-
+{% block title %}Basket Summary{% endblock %}
 {% block content %}
+
     <div class="container">
         <div class="col-12">
             <h1 class="h2">Your Basket</h1>
@@ -25,7 +21,8 @@
                         <div class="pe-3">Order</div>
                         <div class="dropdown">
                             <a class="text-reset text-decoration-none dropdown-toggle" href="#" role="link"
-                               id="dropdownLink" data-bs-toggle="dropdown" aria-expanded="false">
+                               id="dropdownLink"
+                               data-bs-toggle="dropdown" aria-expanded="false">
                                 Shipping options
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor"
                                      class="bi bi-chevron-down" viewBox="0 0 16 16">
@@ -33,7 +30,6 @@
                                           d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
                                 </svg>
                             </a>
-
                             <ul class="dropdown-menu" aria-labelledby="dropdownLink">
                                 <li class="item small">Next day delivery</li>
                                 <li class="item small">Premimum delivery</li>
@@ -41,7 +37,6 @@
                         </div>
                     </div>
                     <div class="text-end">
-
                         <div class="">Sub Total: <span class="fw-bold">£</span>
                             <div id="subtotal" class="d-inline-flex fw-bold">{{ basket.get_subtotal_price }}</div>
                         </div>
@@ -50,28 +45,25 @@
                         <div class="pt-2">Total to pay: <span class="fw-bold h5">£</span><span id="total"
                                                                                                class="fw-bold h5">{{ basket.get_total_price }}</span>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-5 col-lg-4 order-md-last p-0 order-3">
                     <div class="d-grid gap-2 ">
-                        <a role="button" href="{% url 'payment:basket' %}" class="btn btn-success fw-bold"
-                           type="button">Checkout</a>
+                        <a role="button" href="{% url 'checkout:deliverychoices' %}" class="btn btn-success fw-bold"
+                           type="button">Checkout Securely</a>
                         <button class="btn btn-light" type="button">Save for later</button>
                     </div>
                 </div>
                 <div class="col-md-7 col-lg-8 p-0">
-
                     {% for item in basket %}
                         {% with product=item.product %}
-
                             <div class="card mb-3 border-0 product-item" data-index="{{ product.id }}">
                                 <div class="row g-0">
                                     <div class="col-md-2 d-none d-md-block">
                                         {% for image in product.product_image.all %}
                                             {% if image.is_feature %}
-                                                <img class="img-fluid mx-auto d-block"
-                                                     src="{{ image.image.url }}" alt="{{ image.alt_text }}"/>
+                                                <img class="img-fluid" alt="Responsive image"
+                                                     src="{{ image.image.url }}" alt="{{ image.image.alt_text }}">
                                             {% endif %}
                                         {% endfor %}
                                     </div>
@@ -102,7 +94,6 @@
                 </div>
             {% endif %}
         </div>
-
     </div>
 
     <script>

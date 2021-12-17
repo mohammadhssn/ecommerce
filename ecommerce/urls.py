@@ -24,8 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('basket/', include('basket.urls', namespace='basket')),
     path('account/', include('account.urls', namespace='account')),
-    path('payment/', include('payment.urls', namespace='payment')),
     path('orders/', include('orders.urls', namespace='orders')),
+    path('checkout/', include('checkout.urls', namespace='checkout')),
     path('__debug__/', include(debug_toolbar.urls)),
     path('', include('store.urls', namespace='store')),
 
