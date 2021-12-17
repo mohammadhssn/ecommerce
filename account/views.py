@@ -8,11 +8,13 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_view
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 from .forms import RegistrationForm, UserLoginForm, UserEditForm, PwdResetForm, PwdReseConfirmForm, UserAddressForm
 from .models import Customer, Address
 from .token import account_activation_token
 from orders.views import UserOrders
+from store.models import Product
 
 
 class AccountRegister(View):
@@ -190,3 +192,24 @@ class SetDefaultAddress(LoginRequiredMixin, View):
         Address.objects.filter(customer=request.user, default=True).update(default=False)
         Address.objects.filter(pk=id, customer=request.user).update(default=True)
         return redirect('account:addresses')
+
+
+# Wish List
+class AddToWishlist(LoginRequiredMixin, View):
+
+    def get(self, request, id):
+        product = get_object_or_404(Product, id=id)
+        if product.users_wishlist.filter(id=request.user.id).exists():
+            product.users_wishlist.remove(request.user)
+            messages.success(request, product.title + " has been removed from your WishList")
+        else:
+            product.users_wishlist.add(request.user)
+            messages.success(request, "Added " + product.title + " to your WishList")
+        return redirect(request.META["HTTP_REFERER"])
+
+
+class Wishlist(LoginRequiredMixin, View):
+
+    def get(self, request):
+        products = Product.objects.filter(users_wishlist=request.user)
+        return render(request, 'account/dashboard/user_wish_list.html', {'wishlist': products})

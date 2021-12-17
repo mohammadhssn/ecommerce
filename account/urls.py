@@ -29,4 +29,8 @@ urlpatterns = [
     path('addresses/edit/<slug:id>/', views.EditeAddress.as_view(), name='edit_address'),
     path('addresses/delete/<slug:id>/', views.DeleteAddress.as_view(), name='delete_address'),
     path('addresses/set_default/<slug:id>/', views.SetDefaultAddress.as_view(), name='set_default_address'),
+
+    # Wish List
+    path('wishlist/', views.Wishlist.as_view(), name='wishlist'),
+    path('wishlist/add_to_wishlist/<int:id>/', views.AddToWishlist.as_view(), name='user_wishlist'),
 ]
