@@ -41,7 +41,7 @@
         </div>
     </div>
     <script
-            src="https://www.paypal.com/sdk/js?client-id=AZQiAqo_G8vygoAIT9tAL-Z6MQd49xERaY6a3N0ijCRXkubEyMnylsk1qjxNIFM2iAFomcSTfq4yW47O&currency=GBP"
+            src="https://www.paypal.com/sdk/js?client-id=AWGc8pZUN6fis34zFrhRmbQexwvlJwzZD_goAiWdPZrx_iuaUkkQhN1uVg5Rk4rhtFi-kKPu_zQ7zjb1&currency=GBP"
             data-sdk-integration-source="button-factory">
     </script>
     <script>
@@ -83,7 +83,7 @@
                     });
                 },
                 onApprove: function (data) {
-                    {#var url = "{% url 'checkout:payment_complete' %}"#}
+                    var url = "{% url 'checkout:payment_complete' %}"
                     return fetch(url, {
                         method: 'POST',
                         headers: {
@@ -94,7 +94,7 @@
                             orderID: data.orderID
                         })
                     }).then(function () {
-                        {#location.href = '{% url 'checkout:payment_successful' %}';#}
+                        location.href = '{% url 'checkout:payment_successful' %}';
                     })
                 },
             }).render('#paypal-button-container');

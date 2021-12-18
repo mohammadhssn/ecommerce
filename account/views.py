@@ -1,4 +1,3 @@
-import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.template.loader import render_to_string
@@ -15,6 +14,7 @@ from .forms import RegistrationForm, UserLoginForm, UserEditForm, PwdResetForm, 
 from .models import Customer, Address
 from .token import account_activation_token
 from orders.views import UserOrders
+from orders.models import Order
 from store.models import Product
 
 
@@ -219,3 +219,13 @@ class Wishlist(LoginRequiredMixin, View):
     def get(self, request):
         products = Product.objects.filter(users_wishlist=request.user)
         return render(request, 'account/dashboard/user_wish_list.html', {'wishlist': products})
+
+
+# Orders
+
+class UserOrders(LoginRequiredMixin, View):
+
+    def get(self, request):
+        user_id = request.user.id
+        orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
+        return render(request, 'account/dashboard/user_orders.html', {'orders': orders})

@@ -33,4 +33,7 @@ urlpatterns = [
     # Wish List
     path('wishlist/', views.Wishlist.as_view(), name='wishlist'),
     path('wishlist/add_to_wishlist/<int:id>/', views.AddToWishlist.as_view(), name='user_wishlist'),
+
+    # Order
+    path('user_orders/', views.UserOrders.as_view(), name='user_orders'),
 ]
