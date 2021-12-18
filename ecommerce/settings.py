@@ -3,7 +3,7 @@ from pathlib import Path
 
 import django.core.mail.backends.console
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-a4!xdk@^0d#oo)3_y-u%vzo&9+x)o1)o%e&%i$5+!_5=&^is@b'
 
@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Local apps
-    'store.apps.StoreConfig',
+    'catalogue.apps.StoreConfig',
     'basket.apps.BasketConfig',
     'account.apps.AccountConfig',
     'orders.apps.OrdersConfig',
@@ -53,7 +53,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'store.context_processors.categories',  # add new
+                'catalogue.context_processors.categories',  # add new
                 'basket.context_processors.basket',  # add new
             ],
         },

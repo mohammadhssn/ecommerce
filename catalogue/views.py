@@ -7,7 +7,7 @@ class ProductsAll(View):
 
     def get(self, request):
         products = Product.objects.prefetch_related("product_image").filter(is_active=True)
-        return render(request, 'store/home.html', {'products': products})
+        return render(request, 'catalogue/home.html', {'products': products})
 
 
 class ProductDetail(View):
@@ -15,7 +15,7 @@ class ProductDetail(View):
     def get(self, request, slug):
         product = get_object_or_404(Product, slug=slug, is_active=True)
 
-        return render(request, 'store/product_detail.html', {'product': product})
+        return render(request, 'catalogue/product_detail.html', {'product': product})
 
 
 class CategoryList(View):
@@ -25,4 +25,4 @@ class CategoryList(View):
         products = Product.objects.filter(
             category__in=Category.objects.get(name=category).get_descendants(include_self=True)
         )
-        return render(request, 'store/category.html', {'category': category, 'products': products})
+        return render(request, 'catalogue/category.html', {'category': category, 'products': products})

@@ -1,3 +1,21 @@
+####
+# Django 
+####
+*.log
+*.pot
+*.pyc
 __pycache__/
-.idea/
+
+####
+# Environments
+####
+.venv/
 venv/
+
+####
+# Unit Test & 
+# Coverage Reports
+####
+htmlcov/
+.coverage
+.pytest_cache

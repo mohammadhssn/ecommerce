@@ -51,7 +51,7 @@ class DeliveryAddress(LoginRequiredMixin, View):
     #     previous_url = request.META.get('HTTP_REFERER')
     #
     #     if previous_url is None:
-    #         return redirect('store:store_home')
+    #         return redirect('catalogue:store_home')
     #     return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -61,7 +61,7 @@ class DeliveryAddress(LoginRequiredMixin, View):
             try:
                 return redirect(request.META.get('HTTP_REFERER'))
             except TypeError:
-                return redirect('store:store_home')
+                return redirect('catalogue:store_home')
 
         addresses = Address.objects.filter(customer=request.user).order_by('-default')
         if addresses:
@@ -80,7 +80,7 @@ class PaymentSelection(LoginRequiredMixin, View):
     #     previous_url = request.META.get('HTTP_REFERER')
     #
     #     if previous_url is None:
-    #         return redirect('store:store_home')
+    #         return redirect('catalogue:store_home')
     #     return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
@@ -90,7 +90,7 @@ class PaymentSelection(LoginRequiredMixin, View):
             try:
                 return redirect(request.META.get('HTTP_REFERER'))
             except TypeError:
-                return redirect('store:store_home')
+                return redirect('catalogue:store_home')
 
         return render(request, 'checkout/payment_selection.html')
 

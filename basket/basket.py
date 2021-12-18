@@ -1,4 +1,4 @@
-from store.models import Product
+from catalogue.models import Product
 from decimal import Decimal
 from django.conf import settings
 

@@ -3,7 +3,7 @@ from django.conf import settings
 
 from decimal import Decimal
 
-from store.models import Product
+from catalogue.models import Product
 
 
 class Order(models.Model):

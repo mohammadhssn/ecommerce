@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('rght', models.PositiveIntegerField(editable=False)),
                 ('tree_id', models.PositiveIntegerField(db_index=True, editable=False)),
                 ('level', models.PositiveIntegerField(editable=False)),
-                ('parent', mptt.fields.TreeForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='store.category')),
+                ('parent', mptt.fields.TreeForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='children', to='catalogue.category')),
             ],
             options={
                 'verbose_name': 'Category',
@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True, help_text='Change product visibility', verbose_name='Product visibility')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Created at')),
                 ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Updated at')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='store.category')),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='catalogue.category')),
             ],
             options={
                 'verbose_name': 'Product',
@@ -79,8 +79,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('value', models.CharField(help_text='Product specification value (maximum of 255 words)', max_length=255, verbose_name='value')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='store.product')),
-                ('specification', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='store.productspecification')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='catalogue.product')),
+                ('specification', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='catalogue.productspecification')),
             ],
             options={
                 'verbose_name': 'Product Specification Value',
@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='productspecification',
             name='product_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='store.producttype'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='catalogue.producttype'),
         ),
         migrations.CreateModel(
             name='ProductImage',
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
                 ('is_feature', models.BooleanField(default=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='product_image', to='store.product')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='product_image', to='catalogue.product')),
             ],
             options={
                 'verbose_name': 'Product Image',
@@ -111,6 +111,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='product',
             name='product_type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='store.producttype'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='catalogue.producttype'),
         ),
     ]

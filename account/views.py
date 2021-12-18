@@ -15,7 +15,7 @@ from .models import Customer, Address
 from .token import account_activation_token
 from orders.views import UserOrders
 from orders.models import Order
-from store.models import Product
+from catalogue.models import Product
 
 
 class AccountRegister(View):
