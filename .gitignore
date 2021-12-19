@@ -11,6 +11,8 @@ __pycache__/
 ####
 .venv/
 venv/
+.idea/
+idea/
 
 ####
 # Unit Test & 
