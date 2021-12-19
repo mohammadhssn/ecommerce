@@ -18,15 +18,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-import debug_toolbar
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('basket/', include('basket.urls', namespace='basket')),
     path('account/', include('account.urls', namespace='account')),
     path('orders/', include('orders.urls', namespace='orders')),
     path('checkout/', include('checkout.urls', namespace='checkout')),
-    path('__debug__/', include(debug_toolbar.urls)),
     path('', include('catalogue.urls', namespace='catalogue')),
 
 ]
